@@ -1,0 +1,60 @@
+[
+  {
+    "id": 3,
+    "question": "Was ist richtig?",
+    "answer": "Checked Exception",
+    "correct_answers": [
+      "Checked Exception"
+    ],
+    "category": "Exceptions",
+    "created_at": "2025-04-09T22:56:33Z",
+    "last_reviewed": "2025-04-28T14:45:21.928206454+02:00",
+    "times_reviewed": 3,
+    "times_correct": 3
+  },
+  {
+    "id": 1,
+    "question": "Was ist HTTP?",
+    "answer": "Hypertext Transfer Protocol",
+    "correct_answers": [
+      "Hypertext Transfer Protocol"
+    ],
+    "category": "General",
+    "created_at": "2025-04-09T22:52:11Z",
+    "last_reviewed": "2025-04-28T14:45:31.636536846+02:00",
+    "times_reviewed": 3,
+    "times_correct": 3
+  },
+  {
+    "id": 4,
+    "question": "Was bedeutet UML?",
+    "answer": "Unified Markup Language",
+    "correct_answers": [
+      "Unified Markup Language"
+    ],
+    "options": [
+      "Universe Markup Language",
+      "Unified Markdown Language",
+      "Unified Markup Language",
+      "Unity Markup Language"
+    ],
+    "category": "General",
+    "created_at": "2025-04-28T14:44:40.038890796+02:00",
+    "last_reviewed": "2025-04-28T14:45:41.303982948+02:00",
+    "times_reviewed": 1,
+    "times_correct": 1
+  },
+  {
+    "id": 2,
+    "question": "Was ist richtig?",
+    "answer": "Checked Exception",
+    "correct_answers": [
+      "Checked Exception"
+    ],
+    "category": "General",
+    "created_at": "2025-04-09T22:53:18Z",
+    "last_reviewed": "2025-04-28T14:45:49.197503303+02:00",
+    "times_reviewed": 3,
+    "times_correct": 3
+  }
+]

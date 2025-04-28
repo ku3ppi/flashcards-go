@@ -599,6 +599,7 @@ func main() {
 			WithOptions(options).
 			// --- KORREKTUR HIER (DefaultText ist ok) ---
 			WithDefaultText("Select an action").
+			WithMaxHeight(10).
 			Show()
 
 		// Handle potential cancellation of the main menu selection
