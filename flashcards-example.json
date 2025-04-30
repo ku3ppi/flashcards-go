@@ -10,7 +10,7 @@
     "created_at": "2025-04-09T22:56:33Z",
     "last_reviewed": "2025-04-28T14:45:21.928206454+02:00",
     "times_reviewed": 3,
-    "times_correct": 3
+    "times_correct": 2
   },
   {
     "id": 1,
@@ -56,5 +56,165 @@
     "last_reviewed": "2025-04-28T14:45:49.197503303+02:00",
     "times_reviewed": 3,
     "times_correct": 3
+  },
+  {
+    "id": 5,
+    "question": "Welches Protokoll wird hauptsächlich zum Senden von E-Mails verwendet?",
+    "answer": "SMTP",
+    "correct_answers": [
+      "SMTP"
+    ],
+    "options": [
+      "SMTP",
+      "HTTP",
+      "FTP",
+      "POP3"
+    ],
+    "category": "Netzwerke",
+    "created_at": "2025-04-30T12:55:26Z",
+    "last_reviewed": "2025-04-30T12:55:26Z",
+    "times_reviewed": 0,
+    "times_correct": 0
+  },
+  {
+    "id": 6,
+    "question": "Wofür steht die Abkürzung DNS?",
+    "answer": "Domain Name System",
+    "correct_answers": [
+      "Domain Name System"
+    ],
+    "category": "Netzwerke",
+    "created_at": "2025-04-30T12:55:26Z",
+    "last_reviewed": "2025-04-30T12:55:26Z",
+    "times_reviewed": 0,
+    "times_correct": 0
+  },
+  {
+    "id": 7,
+    "question": "Welche Schicht des OSI-Modells ist für das Routing verantwortlich?",
+    "answer": "Vermittlungsschicht (Network Layer)",
+    "correct_answers": [
+      "Vermittlungsschicht (Network Layer)"
+    ],
+    "options": [
+      "Vermittlungsschicht (Network Layer)",
+      "Sicherungsschicht (Data Link Layer)",
+      "Transportschicht (Transport Layer)",
+      "Bitübertragungsschicht (Physical Layer)"
+    ],
+    "category": "Netzwerke",
+    "created_at": "2025-04-30T12:55:26Z",
+    "last_reviewed": "2025-04-30T12:55:26Z",
+    "times_reviewed": 0,
+    "times_correct": 0
+  },
+  {
+    "id": 8,
+    "question": "Welcher Diagrammtyp in UML zeigt die Interaktion zwischen Objekten über die Zeit?",
+    "answer": "Sequenzdiagramm",
+    "correct_answers": [
+      "Sequenzdiagramm"
+    ],
+    "options": [
+      "Sequenzdiagramm",
+      "Klassendiagramm",
+      "Anwendungsfalldiagramm",
+      "Aktivitätsdiagramm"
+    ],
+    "category": "Diagramme",
+    "created_at": "2025-04-30T12:55:26Z",
+    "last_reviewed": "2025-04-30T12:55:26Z",
+    "times_reviewed": 0,
+    "times_correct": 0
+  },
+  {
+    "id": 9,
+    "question": "Was repräsentiert eine Raute typischerweise in einem Flussdiagramm?",
+    "answer": "Entscheidung",
+    "correct_answers": [
+      "Entscheidung"
+    ],
+    "category": "Diagramme",
+    "created_at": "2025-04-30T12:55:26Z",
+    "last_reviewed": "2025-04-30T12:55:26Z",
+    "times_reviewed": 0,
+    "times_correct": 0
+  },
+  {
+    "id": 10,
+    "question": "Welches OOP-Prinzip erlaubt es einer Klasse, mehrere Methoden mit demselben Namen, aber unterschiedlichen Parametern zu haben?",
+    "answer": "Polymorphie (Überladen)",
+    "correct_answers": [
+      "Polymorphie (Überladen)"
+    ],
+    "options": [
+      "Polymorphie (Überladen)",
+      "Vererbung",
+      "Kapselung",
+      "Abstraktion"
+    ],
+    "category": "OOP",
+    "created_at": "2025-04-30T12:55:26Z",
+    "last_reviewed": "2025-04-30T12:55:26Z",
+    "times_reviewed": 0,
+    "times_correct": 0
+  },
+  {
+    "id": 11,
+    "question": "Wie nennt man das Bündeln von Daten (Attributen) und Methoden, die auf diesen Daten operieren, innerhalb einer einzigen Einheit (Klasse)?",
+    "answer": "Kapselung",
+    "correct_answers": [
+      "Kapselung"
+    ],
+    "category": "OOP",
+    "created_at": "2025-04-30T12:55:26Z",
+    "last_reviewed": "2025-04-30T12:55:26Z",
+    "times_reviewed": 0,
+    "times_correct": 0
+  },
+  {
+    "id": 12,
+    "question": "Welches Schlüsselwort wird in vielen OOP-Sprachen verwendet, um auf die aktuelle Instanz einer Klasse zu verweisen?",
+    "answer": "this",
+    "correct_answers": [
+      "this"
+    ],
+    "options": [
+      "this",
+      "self",
+      "super",
+      "new"
+    ],
+    "category": "OOP",
+    "created_at": "2025-04-30T12:55:26Z",
+    "last_reviewed": "2025-04-30T12:55:26Z",
+    "times_reviewed": 0,
+    "times_correct": 0
+  },
+  {
+    "id": 13,
+    "question": "Wofür steht die Abkürzung SQL?",
+    "answer": "Structured Query Language",
+    "correct_answers": [
+      "Structured Query Language"
+    ],
+    "category": "General IT",
+    "created_at": "2025-04-30T12:55:26Z",
+    "last_reviewed": "2025-04-30T12:55:26Z",
+    "times_reviewed": 0,
+    "times_correct": 0
+  },
+  {
+    "id": 14,
+    "question": "Was ist die Grundeinheit für die Datenspeicherung in den meisten Computersystemen?",
+    "answer": "Byte",
+    "correct_answers": [
+      "Byte"
+    ],
+    "category": "General IT",
+    "created_at": "2025-04-30T12:55:26Z",
+    "last_reviewed": "2025-04-30T12:55:26Z",
+    "times_reviewed": 0,
+    "times_correct": 0
   }
 ]
