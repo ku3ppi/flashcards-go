@@ -1,68 +1,74 @@
 # flashcards-go
-CLI flashcard app written in go using cobra &amp;&amp; pterm + web UI
 
-A colorful terminal-based flashcard application for effective learning and memorization. Built with Go and pterm for a beautiful terminal UI.
+A colorful terminal-based flashcard application for effective learning and memorization. Built with Go and [pterm](https://github.com/pterm/pterm) for an interactive terminal UI.
+
+Uses Go's standard `flag` package for command-line argument parsing (like specifying the data file).
 
 ## Features
 
-- Create and manage multiple flashcard decks
-- Add cards with questions and answers
-- Study mode with spaced repetition
-- **Quiz mode with multiple choice questions**
-- Beautiful, colorful terminal interface
+-> Load and save flashcards from/to a JSON file using the `--file` flag. <br>
+-> Add cards with questions, answers, categories, and optional multiple-choice options. <br>
+-> **Review Mode:** Go through cards one by one and self-assess if you got them right. <br>
+-> **Quiz Mode:** Test your knowledge with interactive questions (text input or multiple choice). <br>
+-> List existing flashcards, optionally filtered by category. <br>
+-> Delete flashcards by ID. <br>
+-> Tracks basic statistics (times reviewed, times correct). <br>
+-> Interactive terminal interface using pterm. <br>
 
 ## Installation
 
 ```bash
-# Clone the repository
-git clone https://github.com/ku3ppi/flashcard-app.git
-cd flashcard-app
+# Clone the repository (adjust URL if needed)
+git clone https://github.com/ku3ppi/flashcards-go.git
+cd flashcards-go
 
-# Build the application
-go build -o flashcard
+# Build the application (optional, you can use go run)
+go build -o flashcard-app main.go
 ```
 
 ## Usage
 
+You can run the application directly using `go run` or build it first. The `--file` flag is required to specify the JSON file for storing flashcards.
+
+**Using `go run`:**
+
 ```bash
-# Create a new deck
-./flashcard create --name "Spanish Vocabulary"
+# Run the app, specifying the data file (creates if not found)
+# Defaults to 'flashcards.json' in the current directory if --file is omitted
+go run main.go --file my_flashcards.json
 
-# Add cards to a deck
-./flashcard add --deck "Spanish Vocabulary"
+# Example using an absolute path
+go run main.go --file /home/user/Documents/my_cards.json
 
-# List all available decks
-./flashcard list
-
-# Study a deck
-./flashcard study --deck "Spanish Vocabulary"
-
-# Quiz yourself on a deck (with multiple choice questions)
-./flashcard quiz --deck "Spanish Vocabulary" --questions 10
+# Example using the default filename 'flashcards.json'
+go run main.go
 ```
 
-## Study Modes
+**Using the built executable:**
 
-### Standard Study
-Review your flashcards one by one, revealing the answer after you've thought about it. You decide if you got it right or wrong, which affects the spaced repetition system.
+```bash
+# Build it first (if you haven't already)
+go build -o flashcard-app main.go
 
-### Quiz Mode
-Test your knowledge with multiple-choice questions! The app will:
-- Present questions in random order
-- Provide 4 options for each question (1 correct answer + 3 distractors)
-- Track your score and display results at the end
-- Update card proficiency levels based on your answers
+# Run the app, specifying the data file
+./flashcard-app --file my_flashcards.json
 
-## Spaced Repetition System
+# Example using an absolute path
+./flashcard-app --file /home/user/Documents/my_cards.json
 
-This flashcard app uses a simple spaced repetition system with 5 boxes:
+# Example using the default filename 'flashcards.json'
+./flashcard-app
+```
 
-- Box 1: Cards you need to review most frequently
-- Box 2-4: Intermediate boxes
-- Box 5: Cards you know very well
+Once the application starts, follow the interactive menu prompts:
 
-When you answer a card correctly, it moves up one box. If you answer incorrectly, the card goes back to box 1.
+1.  **Add new flashcard:** Enter question, answer, category, and optionally define multiple-choice options.
+2.  **Review flashcards:** Go through cards (all or by category) and mark if you answered correctly.
+3.  **Quiz mode:** Answer a set number of questions (all or by category) interactively.
+4.  **List flashcards:** View a table of your cards (all or by category).
+5.  **Delete a flashcard:** Remove a card using its ID after listing them.
+6.  **Exit:** Save changes (if any) to the JSON file and close the application.
 
-## Web Version (Optional)
+## Data Storage
 
-A web frontend using React, SASS/SCSS, and unoCSS is planned for a future release.
+Flashcards are stored in a simple JSON file specified by the `--file` flag (or `flashcards.json` by default). If the file doesn't exist at the specified path when the application starts, it will begin with an empty set and create the file upon saving (e.g., after adding a card or finishing a review/quiz).
