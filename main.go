@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"errors"
+	"flag" // <-- NEU: Importiere das flag Paket
 	"fmt"
 	"io/ioutil"
 	"math/rand"
@@ -39,7 +40,7 @@ type FlashcardApp struct {
 // NewFlashcardApp creates a new instance of the FlashcardApp
 func NewFlashcardApp(filePath string) *FlashcardApp {
 	app := &FlashcardApp{
-		FilePath:   filePath,
+		FilePath:   filePath, // <-- GEÄNDERT: Wird jetzt dynamisch übergeben
 		Flashcards: []Flashcard{},
 		maxID:      0,
 	}
@@ -51,7 +52,8 @@ func NewFlashcardApp(filePath string) *FlashcardApp {
 func (app *FlashcardApp) loadFlashcards() error {
 	// Check if file exists
 	if _, err := os.Stat(app.FilePath); errors.Is(err, os.ErrNotExist) {
-		pterm.Warning.Println("Flashcard file not found. Starting with an empty set.")
+		// GEÄNDERT: Zeige den Dateipfad in der Meldung
+		pterm.Warning.Printf("Flashcard file '%s' not found. Starting with an empty set.\n", app.FilePath)
 		app.Flashcards = []Flashcard{}
 		app.maxID = 0
 		return nil // Not an error if the file doesn't exist yet
@@ -66,7 +68,8 @@ func (app *FlashcardApp) loadFlashcards() error {
 
 	// Handle empty file case
 	if len(data) == 0 {
-		pterm.Warning.Println("Flashcard file is empty. Starting with an empty set.")
+		// GEÄNDERT: Zeige den Dateipfad
+		pterm.Warning.Printf("Flashcard file '%s' is empty. Starting with an empty set.\n", app.FilePath)
 		app.Flashcards = []Flashcard{}
 		app.maxID = 0
 		return nil
@@ -89,7 +92,8 @@ func (app *FlashcardApp) loadFlashcards() error {
 			app.maxID = card.ID
 		}
 	}
-	// pterm.Info.Printf("Loaded %d flashcards.\n", len(app.Flashcards))
+	// GEÄNDERT: Zeige den Dateipfad
+	pterm.Info.Printf("Loaded %d flashcards from '%s'.\n", len(app.Flashcards), app.FilePath)
 	return nil
 }
 
@@ -103,6 +107,7 @@ func (app *FlashcardApp) saveFlashcards() error {
 
 	err = ioutil.WriteFile(app.FilePath, data, 0644) // rw-r--r-- permissions
 	if err != nil {
+		// GEÄNDERT: Zeige den Dateipfad
 		pterm.Error.Printf("Error writing flashcard file '%s': %v\n", app.FilePath, err)
 		return err
 	}
@@ -151,7 +156,8 @@ func (app *FlashcardApp) addCard(question, answer, category string, options, cor
 	app.Flashcards = append(app.Flashcards, newCard)
 	err := app.saveFlashcards()
 	if err == nil {
-		pterm.Success.Printf("Added new card (ID: %d): %s\n", newCard.ID, question)
+		// GEÄNDERT: Zeige Dateipfad
+		pterm.Success.Printf("Added new card (ID: %d) to '%s': %s\n", newCard.ID, app.FilePath, question)
 	}
 }
 
@@ -174,10 +180,12 @@ func (app *FlashcardApp) reviewCards(categoryFilter string) {
 				reviewCards = append(reviewCards, card)
 			}
 		}
-		pterm.Info.Printf("Reviewing %d cards in category '%s'.\n", len(reviewCards), categoryFilter)
+		// GEÄNDERT: Zeige Dateipfad
+		pterm.Info.Printf("Reviewing %d cards in category '%s' from '%s'.\n", len(reviewCards), categoryFilter, app.FilePath)
 	} else {
 		reviewCards = app.Flashcards
-		pterm.Info.Printf("Reviewing all %d cards.\n", len(reviewCards))
+		// GEÄNDERT: Zeige Dateipfad
+		pterm.Info.Printf("Reviewing all %d cards from '%s'.\n", len(reviewCards), app.FilePath)
 	}
 
 	if len(reviewCards) == 0 {
@@ -201,7 +209,6 @@ func (app *FlashcardApp) reviewCards(categoryFilter string) {
 
 		if isMultipleChoice {
 			pterm.FgYellow.Println("\n(Multiple Choice Question)")
-			// --- KORREKTUR HIER ---
 			_, _ = pterm.DefaultInteractiveContinue.Show("Press Enter to see answer options...")
 
 			// Shuffle options for display only
@@ -214,10 +221,8 @@ func (app *FlashcardApp) reviewCards(categoryFilter string) {
 			for j, option := range displayOptions {
 				pterm.FgCyan.Printf("%d. %s\n", j+1, option)
 			}
-			// --- KORREKTUR HIER ---
 			_, _ = pterm.DefaultInteractiveContinue.Show("Press Enter to see the correct answer(s)...")
 		} else {
-			// --- KORREKTUR HIER ---
 			_, _ = pterm.DefaultInteractiveContinue.Show("Press Enter to see the answer...")
 		}
 
@@ -239,7 +244,6 @@ func (app *FlashcardApp) reviewCards(categoryFilter string) {
 			WithDefaultValue(true).
 			WithConfirmText("y").
 			WithRejectText("n").
-			// --- KORREKTUR HIER ---
 			Show("Did you get it right?") // Prompt directly in Show()
 
 		// Find the original card in the main list to update its stats
@@ -284,10 +288,12 @@ func (app *FlashcardApp) quizMode(categoryFilter string, numQuestions int) {
 				quizCardsSource = append(quizCardsSource, card)
 			}
 		}
-		pterm.Info.Printf("Starting quiz with cards from category '%s'.\n", categoryFilter)
+		// GEÄNDERT: Zeige Dateipfad
+		pterm.Info.Printf("Starting quiz with cards from category '%s' in '%s'.\n", categoryFilter, app.FilePath)
 	} else {
 		quizCardsSource = app.Flashcards
-		pterm.Info.Println("Starting quiz with cards from all categories.")
+		// GEÄNDERT: Zeige Dateipfad
+		pterm.Info.Printf("Starting quiz with cards from all categories in '%s'.\n", app.FilePath)
 	}
 
 	if len(quizCardsSource) == 0 {
@@ -313,7 +319,8 @@ func (app *FlashcardApp) quizMode(categoryFilter string, numQuestions int) {
 
 	correctCount := 0
 
-	pterm.DefaultHeader.Printf("QUIZ MODE: %d questions", numQuestions)
+	// GEÄNDERT: Zeige Dateipfad im Header
+	pterm.DefaultHeader.Printf("QUIZ MODE: %d questions from %s", numQuestions, app.FilePath)
 
 	for i, card := range quizCards {
 		pterm.DefaultSection.Printf("Question %d/%d", i+1, numQuestions)
@@ -339,7 +346,6 @@ func (app *FlashcardApp) quizMode(categoryFilter string, numQuestions int) {
 			// Use InteractiveSelect for multiple choice
 			selectedOptionStr, _ := pterm.DefaultInteractiveSelect.
 				WithOptions(optionChoices).
-				// --- KORREKTUR HIER (DefaultText ist ok, kein Prompt nötig) ---
 				WithDefaultText("Select your answer").
 				Show()
 
@@ -361,7 +367,6 @@ func (app *FlashcardApp) quizMode(categoryFilter string, numQuestions int) {
 
 		} else {
 			// Text input for non-multiple choice
-			// --- KORREKTUR HIER ---
 			userAnswer, _ = pterm.DefaultInteractiveTextInput.Show("Your answer")
 			userAnswer = strings.TrimSpace(userAnswer)
 
@@ -434,9 +439,11 @@ func (app *FlashcardApp) listCards(categoryFilter string) {
 
 	if len(displayCards) == 0 {
 		if categoryFilter != "" {
-			pterm.Warning.Printf("No cards found in category '%s'.\n", categoryFilter)
+			// GEÄNDERT: Zeige Dateipfad
+			pterm.Warning.Printf("No cards found in category '%s' in '%s'.\n", categoryFilter, app.FilePath)
 		} else {
-			pterm.Warning.Println("No flashcards available.")
+			// GEÄNDERT: Zeige Dateipfad
+			pterm.Warning.Printf("No flashcards available in '%s'.\n", app.FilePath)
 		}
 		return
 	}
@@ -530,11 +537,13 @@ func (app *FlashcardApp) deleteCard(cardID int) bool {
 		app.Flashcards = append(app.Flashcards[:indexToDelete], app.Flashcards[indexToDelete+1:]...)
 		err := app.saveFlashcards()
 		if err == nil {
-			pterm.Success.Printf("Deleted card (ID: %d): %s\n", cardID, deletedQuestion)
+			// GEÄNDERT: Zeige Dateipfad
+			pterm.Success.Printf("Deleted card (ID: %d) from '%s': %s\n", cardID, app.FilePath, deletedQuestion)
 			return true
 		}
 	} else {
-		pterm.Error.Printf("Card with ID %d not found.\n", cardID)
+		// GEÄNDERT: Zeige Dateipfad
+		pterm.Error.Printf("Card with ID %d not found in '%s'.\n", cardID, app.FilePath)
 	}
 	return false
 }
@@ -561,7 +570,6 @@ func (app *FlashcardApp) selectCategory(prompt string, allowAll bool) string {
 
 	selected, _ := pterm.DefaultInteractiveSelect.
 		WithOptions(options).
-		// --- KORREKTUR HIER (DefaultText ist ok) ---
 		WithDefaultText(prompt).
 		Show()
 
@@ -578,15 +586,25 @@ func (app *FlashcardApp) selectCategory(prompt string, allowAll bool) string {
 
 // --- Main Application Logic ---
 func main() {
+	// --- NEU: Flag Definition ---
+	// Definiere das Flag: Name "file", Standardwert "flashcards.json", Beschreibung für -h/--help
+	filePath := flag.String("file", "flashcards.json", "Path to the flashcards JSON file")
+
+	// Parse die Kommandozeilen-Flags
+	flag.Parse()
+	// --- Ende NEU ---
+
 	// Seed random number generator
 	rand.Seed(time.Now().UnixNano())
 
 	// Setup application
-	app := NewFlashcardApp("flashcards.json")
+	// NEU: Verwende den Wert aus dem Flag (Dereferenzierung mit *)
+	app := NewFlashcardApp(*filePath)
 
 	// Main menu loop
 	for {
-		pterm.DefaultHeader.Println("=== GO FLASHCARD APP ===")
+		// NEU/GEÄNDERT: Zeige den verwendeten Dateipfad im Header an
+		pterm.DefaultHeader.Printf("=== GO FLASHCARD APP ('%s') ===", app.FilePath)
 		options := []string{
 			"1. Add new flashcard",
 			"2. Review flashcards",
@@ -597,9 +615,8 @@ func main() {
 		}
 		selectedOption, _ := pterm.DefaultInteractiveSelect.
 			WithOptions(options).
-			// --- KORREKTUR HIER (DefaultText ist ok) ---
+			WithMaxHeight(10). // Deine Ergänzung für die Höhe
 			WithDefaultText("Select an action").
-			WithMaxHeight(10).
 			Show()
 
 		// Handle potential cancellation of the main menu selection
@@ -613,15 +630,13 @@ func main() {
 
 		switch choice {
 		case "1": // Add card
-			// --- KORREKTUR HIER ---
 			question, _ := pterm.DefaultInteractiveTextInput.Show("Enter question")
 			answer, _ := pterm.DefaultInteractiveTextInput.Show("Enter the 'main' answer (used if not multiple choice)")
 			category, _ := pterm.DefaultInteractiveTextInput.Show("Enter category (leave blank for 'General')")
 
-			// --- KORREKTUR HIER ---
 			isMultipleChoice, _ := pterm.DefaultInteractiveConfirm.
 				WithConfirmText("y").WithRejectText("n").
-				Show("Make this a multiple choice question?") // Prompt in Show()
+				Show("Make this a multiple choice question?")
 
 			var mcOptions []string
 			var mcCorrectAnswers []string
@@ -630,31 +645,28 @@ func main() {
 				pterm.Info.Println("Enter options (type 'done' when finished, need at least 2):")
 				optionCount := 1
 				for {
-					// --- KORREKTUR HIER ---
 					optionText, _ := pterm.DefaultInteractiveTextInput.
-						Show(fmt.Sprintf("Option %d", optionCount)) // Prompt in Show()
+						Show(fmt.Sprintf("Option %d", optionCount))
 
 					trimmedOption := strings.ToLower(strings.TrimSpace(optionText))
 					if trimmedOption == "done" {
 						if len(mcOptions) < 2 {
 							pterm.Warning.Println("Need at least 2 options for multiple choice. Please add more.")
-							continue // Ask for another option
+							continue
 						}
-						break // Exit loop if 'done' and enough options
+						break
 					}
 
-					if optionText != "" { // Add only non-empty options
+					if optionText != "" {
 						mcOptions = append(mcOptions, optionText)
-						// --- KORREKTUR HIER ---
 						isCorrect, _ := pterm.DefaultInteractiveConfirm.
 							WithConfirmText("y").WithRejectText("n").
-							Show(fmt.Sprintf("Is '%s' a correct answer?", optionText)) // Prompt in Show()
+							Show(fmt.Sprintf("Is '%s' a correct answer?", optionText))
 						if isCorrect {
 							mcCorrectAnswers = append(mcCorrectAnswers, optionText)
 						}
 						optionCount++
 					} else if trimmedOption != "done" {
-						// User just pressed Enter without typing anything (and not 'done')
 						pterm.Warning.Println("Option cannot be empty. Please enter text or type 'done'.")
 					}
 				}
@@ -667,8 +679,7 @@ func main() {
 				pterm.Warning.Println("No cards to review yet. Add some first!")
 				continue
 			}
-			category := app.selectCategory("Select category to review", true) // Allow selecting "All"
-			// If category selection was cancelled, selectCategory returns "" which means review all
+			category := app.selectCategory("Select category to review", true)
 			app.reviewCards(category)
 
 		case "3": // Quiz mode
@@ -676,13 +687,11 @@ func main() {
 				pterm.Warning.Println("No cards for a quiz yet. Add some first!")
 				continue
 			}
-			category := app.selectCategory("Select category for quiz", true) // Allow selecting "All"
-			// If category selection was cancelled, selectCategory returns "" which means quiz all
+			category := app.selectCategory("Select category for quiz", true)
 
-			// --- KORREKTUR HIER ---
 			numStr, _ := pterm.DefaultInteractiveTextInput.
-				WithDefaultValue("5").      // Default to 5
-				Show("Number of questions") // Prompt in Show()
+				WithDefaultValue("5").
+				Show("Number of questions")
 
 			num, err := strconv.Atoi(strings.TrimSpace(numStr))
 			if err != nil || num <= 0 {
@@ -696,8 +705,7 @@ func main() {
 				pterm.Warning.Println("No cards to list yet.")
 				continue
 			}
-			category := app.selectCategory("Select category to list", true) // Allow selecting "All"
-			// If category selection was cancelled, selectCategory returns "" which means list all
+			category := app.selectCategory("Select category to list", true)
 			app.listCards(category)
 
 		case "5": // Delete card
@@ -708,9 +716,8 @@ func main() {
 			pterm.Info.Println("Current cards:")
 			app.listCards("") // List all cards so user can see IDs
 
-			// --- KORREKTUR HIER ---
 			idStr, _ := pterm.DefaultInteractiveTextInput.
-				Show("Enter ID of card to delete") // Prompt in Show()
+				Show("Enter ID of card to delete")
 			id, err := strconv.Atoi(strings.TrimSpace(idStr))
 			if err != nil {
 				pterm.Error.Println("Invalid ID entered.")
@@ -723,12 +730,9 @@ func main() {
 			return // Exit the main function
 
 		default:
-			// This case might not be reached if InteractiveSelect handles selection properly
 			pterm.Warning.Println("Invalid selection.")
 		}
 
-		// Pause briefly before showing the menu again
-		// _, _ = pterm.DefaultInteractiveContinue.Show("\nPress Enter to return to menu...") // Optional pause
 		fmt.Println() // Add space before next menu iteration
 	}
 }
