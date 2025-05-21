@@ -28,14 +28,14 @@
   {
     "id": 4,
     "question": "Was bedeutet UML?",
-    "answer": "Unified Markup Language",
+    "answer": "Unified Modelling Language",
     "correct_answers": [
-      "Unified Markup Language"
+      "Unified Modelling Language"
     ],
     "options": [
       "Universe Markup Language",
       "Unified Markdown Language",
-      "Unified Markup Language",
+      "Unified Modelling Language",
       "Unity Markup Language"
     ],
     "category": "General",
